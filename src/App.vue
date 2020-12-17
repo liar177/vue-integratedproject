@@ -1,12 +1,56 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+        <van-nav-bar
+        title="VUE项目"
+        :left-text="ltxt"
+        
+        :left-arrow='ishome'
+        @click-left="onClickLeft"
+        />
     <router-view />
+    <TabBar></TabBar>
   </div>
 </template>
+
+<script>
+import TabBar from '@/components/Tabbar'
+export default {
+  components:{
+    TabBar
+  },
+  data(){
+    return{
+      ishome:false,
+      ltxt:''
+    }
+  },
+  methods:{
+    onClickLeft(){
+      console.log("a")
+      history.go(-1)
+    }
+  },
+  watch:{
+    '$route.path':function(newval){
+      console.log(newval)
+      switch(newval){
+        case '/':
+          this.ishome=false
+          this.ltxt=""
+          break
+        case '/index':
+          this.ishome=false
+          this.ltxt=""
+          break
+        case '/news':
+          this.ishome=true
+          this.ltxt="返回"
+          break
+      }
+    }
+  }
+}
+</script>
 
 <style lang="less">
 #app {
@@ -16,17 +60,16 @@
   text-align: center;
   color: #2c3e50;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+.van-nav-bar__content{
+    background-color: rgb(15, 171, 233);
+    .van-nav-bar__title{
+      color: #fff !important; 
+    }
+    .van-nav-bar__text{
+      color: #fff !important; 
+    }
+    .van-icon-arrow-left{
+      color: #fff !important; 
     }
   }
-}
 </style>
