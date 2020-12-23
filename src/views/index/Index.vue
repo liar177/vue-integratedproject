@@ -13,27 +13,27 @@
         <span>新闻资讯</span>
       </van-grid-item>
 
-      <van-grid-item>
+      <van-grid-item to="/shareImg">
         <img width="60px" height="60px" src="@/assets/icon02.jpg" />
         <span>图片分享</span>
       </van-grid-item>
 
-      <van-grid-item>
+      <van-grid-item to="/shopping">
         <img width="60px" height="60px" src="@/assets/icon03.jpg" />
         <span>商品购买</span>
       </van-grid-item>
 
-      <van-grid-item>
+      <van-grid-item to="/blank">
         <img width="60px" height="60px" src="@/assets/icon04.jpg" />
         <span>留言反馈</span>
       </van-grid-item>
 
-      <van-grid-item>
+      <van-grid-item to="/blank">
         <img width="60px" height="60px" src="@/assets/icon05.jpg" />
         <span>视频专区</span>
       </van-grid-item>
 
-      <van-grid-item>
+      <van-grid-item to="/blank">
         <img width="60px" height="60px" src="@/assets/icon06.jpg" />
         <span>联系我们</span>
       </van-grid-item>
@@ -50,7 +50,7 @@ export default {
   },
   created() {
     this.$http
-      .get('/api/index.php', {
+      .get("/api/index.php", {
         params: {
           type: "slider"
         }
@@ -59,12 +59,15 @@ export default {
         console.log(res);
         this.images = res.data;
       });
- 
   },
   methods: {}
 };
 </script>
 <style lang="less">
+.van-grid-item__content img {
+  width: 60px !important;
+  height: 60px !important;
+}
 .van-swipe {
   width: 100%;
   height: 150px;

@@ -1,10 +1,17 @@
 <template>
   <div>
-    <ul id="box" @scroll="scrollLoad">
+    <van-loading v-if="listLoaded" type="spinner" color="#1989fa" size="24px"
+      >加载中...</van-loading
+    >
+    <ul v-else id="box" @scroll="scrollLoad">
       <li class="box" v-for="(one, index) in news" :key="index">
         <div class="img"><img :src="one.index_src" alt="" /></div>
         <div class="news-content">
-          <div class="title"><router-link :to="{path:'/newsinfo',query:{id:one.nid}}">{{ one.tilte }}</router-link></div>
+          <div class="title">
+            <router-link :to="{ path: '/newsinfo', query: { id: one.nid } }">{{
+              one.tilte
+            }}</router-link>
+          </div>
           <div class="news-info">
             <div class="data-date">{{ one.add_time | realTime }}</div>
             <div class="click-times">浏览次数{{ one.click }}</div>
@@ -12,7 +19,9 @@
         </div>
       </li>
     </ul>
-    <van-loading v-show="loaded" color="#1989fa" size="24px">加载中...</van-loading>
+    <van-loading v-show="addLoaded" color="#1989fa" size="24px"
+      >加载中...</van-loading
+    >
   </div>
 </template>
 <script>
@@ -23,41 +32,45 @@ export default {
       news: [],
       page: 1,
       a: 1,
-      loaded: false,
-      
+      addLoaded: false,
+      listLoaded:false
     };
   },
-  watch: {
-  },
+  watch: {},
   created() {
-    
+    this.listLoaded=true;
     this.getData(this.page);
-    //console.log(this.$route)
-    // document.addEventListener('scroll',this.scrollLoad)
   },
-  mounted() {
-    // console.log(document.documentElement.scrollHeight)
-    // console.log(document.documentElement.clientHeight)
-    // console.log(document.documentElement.scrollTop)
-  },
-  filters: {
-    realTime: (val) => {
-      if (!val) {
-        return;
-      }
+  mounted() {},
+   filters: {
+    realTime: val => {
       val = parseInt(val * 1000);
       let time = val;
-      time=new Date(time).toLocaleDateString();
-      val = new Date(val).toLocaleTimeString();
-      time=time.replaceAll(/\//g,'-');
-      val = val.substring(2);
-      val=" "+val;
-      val=time.concat(val);
+      time = new Date(time);
+      time = time.toLocaleDateString();
+      console.log(time)
+      val = new Date(val);
+      val = val.toLocaleTimeString();
+      var dayTime = val.substring(0, 2) // 当前time类型 ，上午和下午
+      var sUserAgent = navigator.userAgent.toLowerCase();
+      console.log(sUserAgent)
+      if(/ipad|iphone/.test(sUserAgent)){
+        console.log("这是pc端")
+        val = val.substring(2) // 当前时间（只保留后面时间戳）
+      if (dayTime === '下午') {
+        var timeList = val.split(':'); // 转化为数组
+        timeList[0] = Number(timeList[0]) + 12 // 第0个数组为当前小时数， + 12
+        val = timeList.toString().replace(/,/g, ':') // 转化为标准时间格式 00:00:00
+      }
+      }
+      time = time.replace(/\//g, "-");
+      val = " " + val;
+      val = time.concat(val);
       return val;
-    },
+    }
   },
   methods: {
-    changA(){
+    changA() {
       this.a = 2;
     },
     getData(page) {
@@ -65,10 +78,11 @@ export default {
         .get("/api/index.php", {
           params: {
             type: "list",
-            page: page,
-          },
+            page: page
+          }
         })
-        .then((res) => {
+        .then(res => {
+          this.listLoaded=false;
           //console.log(res.data.data); //res.data.data才能得到具体数据
           this.news.push(...res.data.data);
           console.log(this.news);
@@ -76,27 +90,30 @@ export default {
     },
     scrollLoad() {
       let scrollHeight =
-        document.getElementById("box").scrollHeight || document.body.scrollHeight; //正文高度
+        document.getElementById("box").scrollHeight ||
+        document.body.scrollHeight; //正文高度
       let screenH =
-        document.getElementById("box").clientHeight || document.body.clientHeight; //可视区高度
-      let wheight = document.getElementById("box").scrollTop || document.body.scrollTop; //卷去高度
+        document.getElementById("box").clientHeight ||
+        document.body.clientHeight; //可视区高度
+      let wheight =
+        document.getElementById("box").scrollTop || document.body.scrollTop; //卷去高度
 
       if (screenH >= scrollHeight - wheight) {
-        this.loaded = true;
+        this.addLoaded = true;
         setTimeout(() => {
-          this.loaded = false;
+          this.addLoaded = false;
           this.page++;
           this.getData(this.page); //加载列表的请求方法
         }, 1000);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="less">
 #box {
-  width: 375px;
+  width: 100%;
   height: 540px;
   overflow: scroll;
 }
@@ -131,7 +148,7 @@ export default {
     object-fit: contain;
   }
   .news-content {
-    width: 320px;
+    width: 300px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -146,6 +163,11 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-bottom: 5px;
+      a {
+        color: #000;
+        font-size: 16px;
+      }
     }
     .news-info {
       width: 100%;

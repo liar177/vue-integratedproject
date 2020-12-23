@@ -18,7 +18,10 @@ import {
   Tabbar,
   TabbarItem,
   Icon,
-  Loading 
+  Loading,
+  Tab,
+  Tabs,
+  ImagePreview
 } from "vant";
 Vue.use(NavBar)
   .use(Swipe)
@@ -30,7 +33,10 @@ Vue.use(NavBar)
   .use(Tabbar)
   .use(TabbarItem)
   .use(Icon)
-  .use(Loading);
+  .use(Loading)
+  .use(Tab)
+  .use(Tabs)
+  .use(ImagePreview);
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = Axios;
@@ -38,6 +44,5 @@ Vue.prototype.$http = Axios;
 new Vue({
   router,
   store,
-  render: h => h(App),
-  components: {}
+  render: h => h(App)
 }).$mount("#app");

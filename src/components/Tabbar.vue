@@ -1,6 +1,6 @@
 <template>
   <div class="tb">
-    <van-tabbar v-model="active">
+    <van-tabbar :placeholder="true" :fixed="true" v-model="active">
       <van-tabbar-item to="/">
         <van-icon
           badge="3"
@@ -23,7 +23,7 @@
         />
         <span>购物车</span>
       </van-tabbar-item>
-      <van-tabbar-item>
+      <van-tabbar-item to="/waterfall">
         <van-icon class="iconfont" class-prefix="icon" name="pubuliu" />
         <span>瀑布流</span>
       </van-tabbar-item>
@@ -41,18 +41,21 @@ export default {
       active: 0
     };
   },
-  created(){
+  created() {
     switch (this.$route.path) {
-        case "/":
-          this.active = 0;
-          break;
-        case "/index":
-          this.active = 0;
-          break;
-        case "/news":
-          this.active = 1;
-          break;
-      }
+      case "/":
+        this.active = 0;
+        break;
+      case "/index":
+        this.active = 0;
+        break;
+      case "/news":
+        this.active = 1;
+        break;
+      case "/waterfall":
+        this.active = 3;
+        break;
+    }
   },
   name: "Tabbar",
   watch: {

@@ -29,18 +29,17 @@ export default {
       history.go(-1);
     }
   },
-  created(){
+  created() {
     //console.log(this.$route)
-    if(this.$route.path=="/"||this.$route.path=="/index"){
-       this.ishome = false;
-          this.ltxt = "";
-
+    if (this.$route.path == "/" || this.$route.path == "/index") {
+      this.ishome = false;
+      this.ltxt = "";
     }
   },
   watch: {
     "$route.path": function(newval) {
       console.log(newval);
-      switch (newval) {
+      /*    switch (newval) {
         case "/":
           this.ishome = false;
           this.ltxt = "";
@@ -53,6 +52,17 @@ export default {
           this.ishome = true;
           this.ltxt = "返回";
           break;
+        case "/blank":
+          this.ishome = true;
+          this.ltxt = "返回";
+          break;  
+      } */
+      if (newval == "/" || newval == "/index") {
+        this.ishome = false;
+        this.ltxt = "";
+      } else {
+        this.ishome = true;
+        this.ltxt = "返回";
       }
     }
   }
