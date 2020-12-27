@@ -4,16 +4,16 @@
       >加载中...</van-loading
     >
     <ul v-else id="sbox" @scroll="scrollLoad">
-      <li class="shoppingBox" v-for="(good,index) in list" :key='index'>
+      <li class="shoppingBox" v-for="(good, index) in list" :key="index" @click="tobuy(good.id)">
         <div class="sgoodImg"><img :src="good.index_src" alt=""></div>
-        <div class="sgoodTitle">{{good.title}}</div>
+        <div class="sgoodTitle">{{ good.title }}</div>
         <div class="sprice">
-          <div class="s-newprice">￥{{good.new_price}}</div>
-          <div class="s-oldprice">￥{{good.old_price}}</div>
+          <div class="s-newprice">￥{{ good.new_price }}</div>
+          <div class="s-oldprice">￥{{ good.old_price }}</div>
         </div>
         <div class="sgood-info">
-          <div class="sgood-property">{{good.property}}</div>
-          <div class="sgood-kc">仅剩{{good.kc}}件</div>
+          <div class="sgood-property">{{ good.property }}</div>
+          <div class="sgood-kc">仅剩{{ good.kc }}件</div>
         </div>
       </li>
     </ul>
@@ -27,10 +27,10 @@ export default {
   name: "Shopping",
   data(){
     return{
-      page:1,
-      list:[],
-      listLoaded:false,
-      addLoaded:false
+      page: 1,
+      list: [],
+      listLoaded: false,
+      addLoaded: false
     }
   },
   created() {
@@ -39,6 +39,9 @@ export default {
     console.log(this.list)
   },
   methods:{
+    tobuy(id) {
+      this.$router.push({ path: "/shoppingInfo", query: { id: id } });
+    },
     getGoodsData(page) {
       this.$http
         .get("/api/index.php", {

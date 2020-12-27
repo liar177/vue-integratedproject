@@ -49,6 +49,7 @@ export default {
     };
   },
   created() {
+    console.log("a")
     this.$http
       .get("/api/index.php", {
         params: {

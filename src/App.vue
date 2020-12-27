@@ -26,7 +26,7 @@ export default {
   methods: {
     onClickLeft() {
       console.log("a");
-      history.go(-1);
+      this.$router.go(-1)
     }
   },
   created() {

@@ -3,8 +3,8 @@
     <van-loading v-if="listLoaded" type="spinner" color="#1989fa" size="24px"
       >加载中...</van-loading
     >
-    <ul v-else id="imgbox">
-      <li class="imgBox" v-for="(good, index) in imgsArr" :key="index">
+    <ul v-else id="imgbox" v-masonry="imgbox" transition-duration="0.3s" item-selector=".imgBox">
+      <li class="imgBox" v-for="(good, index) in imgsArr" :key="index" v-masonry-tile >
         <div class="goodImg"><img :src="good.index_src" alt=" " /></div>
         <div class="goodTitle">{{ good.title }}</div>
         <div class="goodprice">
@@ -20,6 +20,7 @@
     <van-loading v-show="addLoaded" color="#1989fa" size="24px"
       >加载中...</van-loading
     >
+   
   </div>
 </template>
 <script>
@@ -32,7 +33,7 @@ export default {
       listLoaded: false,
       addLoaded: false,
       imgsArr: [],
-      wid: 356
+      wid: 356,
     };
   },
   created() {
@@ -51,7 +52,7 @@ export default {
         document.getElementsByClassName("goodsList")[0].scrollTop ||
         document.body.scrollTop; //卷去高度
       //console.log(scrollHeight,screenH,wheight)
-      if (screenH >= scrollHeight - wheight - 50) {
+      if (screenH >= scrollHeight - wheight) {
         this.addLoaded = true;
         setTimeout(() => {
           this.addLoaded = false;
@@ -83,7 +84,9 @@ export default {
   overflow: scroll;
   margin: 0 auto;
   .imgBox {
-    width: calc(100% / 3 - 20rpx);
+    padding: 5px;
+    margin: 5px;
+    width: 105px;
     box-sizing: border-box;
     /*  break-inside: avoid; */
     padding: 5px;
