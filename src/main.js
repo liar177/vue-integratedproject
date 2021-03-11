@@ -29,7 +29,7 @@ import {
   Toast,
   Checkbox,
   CheckboxGroup,
-  SubmitBar 
+  SubmitBar
 } from "vant";
 Vue.use(NavBar)
   .use(Swipe)
@@ -67,7 +67,7 @@ Axios.interceptors.request.use(
   // 不需要在每次请求的时候都使用qs模块处理
   config.data = Qs.stringify(config.data);
   // 注意 处理完成后需要将结果return回去
-  //console.log(config);
+  console.log(config);
   return config
   },
   error => {
@@ -78,10 +78,11 @@ Axios.interceptors.request.use(
 // 拦截响应
 Axios.interceptors.response.use(res => {
   // 1为后端返回的token无效的状态码，0为post请求成功
+  console.log(res);
   if (res.data.code == 1 && res.data.msg != "商品id错误" && res.data.msg != "该分类下无图片") {
   // 保存当前路由地址，以便登录后再跳转到该页面
   //store.state.to =  window.location.pathname  ;
-  console.log(res);
+  
   //清空token
   localStorage.removeItem("token")
   // 清空isLogin登录状态

@@ -64,6 +64,9 @@ export default {
     }
   }
   .login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #fff;
     font-size: 16px;
     width: 100%;

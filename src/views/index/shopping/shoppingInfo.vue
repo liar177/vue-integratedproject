@@ -105,6 +105,10 @@ export default {
       qsobj = Qs.stringify(obj);
       sessionStorage.setItem(`idarr${goodid}`, qsobj); // 本地存入选购商品种类数组
       }
+      this.$toast.success({
+        message: "添加成功！",
+        duration: "500"
+      })
     },
     getGoodsData(id) {
       this.$http

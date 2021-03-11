@@ -15,9 +15,9 @@
                 <div class="priceline">
                   <div class="p">￥{{good.new_price}}</div>
                    <div class="parnum">
-                    <span @click="rdc(index, good.id)">-</span>
+                    <span :readonly="is1" @click="rdc($event, index, good.id)">-</span>
                     <span>{{ goodNum[index] }}</span>
-                    <span @click="add(index, good.id)">+</span>
+                    <span @click="add(good.id)">+</span>
                   </div>
                   <a @click="delgood($event, index, good.id)" href="">删除</a>
                 </div>
@@ -49,6 +49,7 @@ export default {
   },
   data() {
     return {
+      is1: false,
       num: 2,
       radio:[],
       addlist: [],
@@ -77,28 +78,25 @@ export default {
       return a = a.toFixed(2);
     }
   },
-  created(){
+  created() {
     var sessionKeys = Object.keys(sessionStorage)
-    for (var i=0; i<sessionKeys.length; i++) {
-    //可以对key 进行分析从而决定是否要删除sessionStorage 里的缓存
+    for (var i = 0; i < sessionKeys.length; i++) {
+      //可以对key 进行分析从而决定是否要删除sessionStorage 里的缓存
       console.log(sessionStorage.getItem(sessionKeys[i]))
-      if(sessionKeys[i] != "isLogin"){
-        let obj=Qs.parse(sessionStorage.getItem(sessionKeys[i]))
+      if (sessionKeys[i] != "isLogin") {
+        let obj = Qs.parse(sessionStorage.getItem(sessionKeys[i]))
         console.log(obj.id);
         this.getGoodsData(obj.id);
         this.goodNum.push(obj.n);
         //状态管理检查（如果页面刷新，状态管理会被初始化）
-        if(this.$store.state.addcart.findIndex(item => item.id == obj.id) == -1){
-
+        if (this.$store.state.addcart.findIndex(item => item.id == obj.id) == -1){
           this.$store.commit("add", obj);
-        } 
+        }
       }
-      
-      
-    //console.log(this.addlist, this.goodNum)
-      }
+  //console.log(this.addlist, this.goodNum)
+    }
   },
-  methods:{
+  methods: {
     delgood(e, index, id){
       e.preventDefault();
       this.addlist.splice(index, 1);
@@ -111,8 +109,8 @@ export default {
     add(index, id) {
       let a = this.goodNum[index];
       a++;
-      console.log(a)
-      console.log(id)
+      console.log(a);
+      console.log(id);
       this.goodNum.splice(index, 1, a); //更新到本地数组
       let obj = { id: id, n: a };
       this.$store.commit("repush", obj); //更新到状态管理
